@@ -21,6 +21,46 @@ public class Cortador {
 	
 	// Verifica se a área não é maior que a área atual da Figura Principal
 	public boolean podeCortar(FiguraGeometrica figuraMenor) {
+		boolean areaMenorQueAtual = validarArea(figuraMenor);
+		boolean sobrePosAlgumaCoordenada = validarSobreposicaoCoordenada(figuraMenor);
+		return areaMenorQueAtual && !sobrePosAlgumaCoordenada;
+	}
+	
+	// Verifica se as coordenadas da nova figura não irão sobrepôr as coordenadas já existentes das FigurasMenores
+	public boolean validarSobreposicaoCoordenada(FiguraGeometrica figuraMenor) {
+		if(figuraMenor != null && figuraMenor.getCoordenadas() != null 
+				&& figuraMenor.getCoordenadas().size() > 0) {
+			
+			boolean sobreposAlgum = false;
+			
+			// Faz um for na lista de Figuras já existentes na lista figurasMenores
+			for(FiguraGeometrica figuraJaExistente : figurasMenores) {
+				
+				// Faz um outro for na lista de coordenadas da figuraMenor, que é a nova figura a ser inserida
+				for(Coordenada coordenadaFiguraMenor : figuraMenor.getCoordenadas()) {
+					// Para cada coordenada da figuraMenor que vai ser inserida, verifica se não vai sobrepôr as coordenadas da figurasJaExistente
+					sobreposAlgum = figuraJaExistente.coordenadaSobrepoeAlgumaJaExistente(coordenadaFiguraMenor);
+					// Se sobrepos da um break pra sair do for 2
+					if(sobreposAlgum) {
+						break;
+					}
+				}
+				
+				// Se sobrepos da um break pra sair do for 1
+				if(sobreposAlgum) {
+					break;
+				}
+				
+			}
+			
+			// Retorna se sobrepos
+			return sobreposAlgum;
+		}
+		return false;
+	}
+	
+	// Verifica se a área da figura menor é menor do que a área da figura principal restante
+	public boolean validarArea(FiguraGeometrica figuraMenor) {
 		double areaFiguraMenor = figuraMenor.calculaArea();
 		double areaFiguraPrincipalAtual = figuraPrincipal.calculaArea();
 		if(areaFiguraMenor >= areaFiguraPrincipalAtual) {
