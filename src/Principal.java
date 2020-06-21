@@ -1,5 +1,9 @@
 import javax.swing.JOptionPane;
 
+import models.Coordenada;
+import models.Cortador;
+import models.Retangulo;
+
 public class Principal {
 	
 	public static void main(String[] args) {			
@@ -14,7 +18,7 @@ public class Principal {
 			Coordenada cod4 = new Coordenada(9.0, 3.0);
 			
 			// Cria o cortador passando uma nova FiguraGeometrica passando as 4 coordenadas
-			cortador = new Cortador(new FiguraGeometrica(cod1, cod2, cod3, cod4));
+			cortador = new Cortador(new Retangulo(cod1, cod2, cod3, cod4, "cm"));
 			
 			String coordenadas = "COORDENADAS: \n" + cortador.getFiguraPrincipal().retornaCoordenadas();
 			String areaTotal = "ÁREA: " + cortador.getFiguraPrincipal().mostraArea();
@@ -57,7 +61,7 @@ public class Principal {
 				Coordenada cod3Menor = new Coordenada(x3, y3);
 				Coordenada cod4Menor = new Coordenada(x4, y4);
 				
-				FiguraGeometrica figuraMenor = new FiguraGeometrica(cod1Menor, cod2Menor, cod3Menor, cod4Menor);
+				Retangulo figuraMenor = new Retangulo(cod1Menor, cod2Menor, cod3Menor, cod4Menor, "cm");
 				boolean cortou = cortador.cortar(figuraMenor);
 				String areaAtual = cortador.getFiguraPrincipal().mostraArea();
 				String message = (cortou) ? "Cortou !!!" : "Não Cortou !!!";

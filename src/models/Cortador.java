@@ -1,40 +1,41 @@
+package models;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Cortador {
 	
 	// Figura Principal
-	private FiguraGeometrica figuraPrincipal;
+	private Retangulo figuraPrincipal;
 	
 	// Lista de Pedaços Menores
-	private List<FiguraGeometrica> figurasMenores;
+	private List<Retangulo> figurasMenores;
 	
 	// Guarda a área da figura principal inicialmente
 	private double areaPrincipalBackup;
 	
 	// Construtor que recebe a Figura Principal
-	public Cortador(FiguraGeometrica figuraPrincipal) {
+	public Cortador(Retangulo figuraPrincipal) {
 		this.figuraPrincipal = figuraPrincipal;
 		this.areaPrincipalBackup = figuraPrincipal.getArea();
-		this.figurasMenores = new ArrayList<FiguraGeometrica>();
+		this.figurasMenores = new ArrayList<Retangulo>();
 	}
 	
 	// Verifica se a área não é maior que a área atual da Figura Principal
-	public boolean podeCortar(FiguraGeometrica figuraMenor) {
+	public boolean podeCortar(Retangulo figuraMenor) {
 		boolean areaMenorQueAtual = validarArea(figuraMenor);
 		boolean sobrePosAlgumaCoordenada = validarSobreposicaoCoordenada(figuraMenor);
 		return areaMenorQueAtual && !sobrePosAlgumaCoordenada;
 	}
 	
 	// Verifica se as coordenadas da nova figura não irão sobrepôr as coordenadas já existentes das FigurasMenores
-	public boolean validarSobreposicaoCoordenada(FiguraGeometrica figuraMenor) {
+	public boolean validarSobreposicaoCoordenada(Retangulo figuraMenor) {
 		if(figuraMenor != null && figuraMenor.getCoordenadas() != null 
 				&& figuraMenor.getCoordenadas().size() > 0) {
 			
 			boolean sobreposAlgum = false;
 			
 			// Faz um for na lista de Figuras já existentes na lista figurasMenores
-			for(FiguraGeometrica figuraJaExistente : figurasMenores) {
+			for(Retangulo figuraJaExistente : figurasMenores) {
 				
 				// Faz um outro for na lista de coordenadas da figuraMenor, que é a nova figura a ser inserida
 				for(Coordenada coordenadaFiguraMenor : figuraMenor.getCoordenadas()) {
@@ -60,9 +61,9 @@ public class Cortador {
 	}
 	
 	// Verifica se a área da figura menor é menor do que a área da figura principal restante
-	public boolean validarArea(FiguraGeometrica figuraMenor) {
-		double areaFiguraMenor = figuraMenor.calculaArea();
-		double areaFiguraPrincipalAtual = figuraPrincipal.calculaArea();
+	public boolean validarArea(Retangulo figuraMenor) {
+		double areaFiguraMenor = figuraMenor.calcularArea();
+		double areaFiguraPrincipalAtual = figuraPrincipal.calcularArea();
 		if(areaFiguraMenor >= areaFiguraPrincipalAtual) {
 			return false;
 		}
@@ -71,30 +72,30 @@ public class Cortador {
 	
 	// Se retornar true porque cortou
 	// False porque não cortou
-	public boolean cortar(FiguraGeometrica figuraMenor) {
+	public boolean cortar(Retangulo figuraMenor) {
 		boolean podeCortar = podeCortar(figuraMenor);
 		if(podeCortar) {
 			figurasMenores.add(figuraMenor);
-			double areaFiguraMenor = figuraMenor.calculaArea();
+			double areaFiguraMenor = figuraMenor.calcularArea();
 			figuraPrincipal.setArea(figuraPrincipal.getArea() - areaFiguraMenor);
 			return true;
 		}
 		return false;
 	}
 	
-	public FiguraGeometrica getFiguraPrincipal() {
+	public Retangulo getFiguraPrincipal() {
 		return figuraPrincipal;
 	}
 	
-	public void setFiguraPrincipal(FiguraGeometrica figuraPrincipal) {
+	public void setFiguraPrincipal(Retangulo figuraPrincipal) {
 		this.figuraPrincipal = figuraPrincipal;
 	}
 	
-	public List<FiguraGeometrica> getFigurasMenores() {
+	public List<Retangulo> getFigurasMenores() {
 		return figurasMenores;
 	}
 	
-	public void setFigurasMenores(List<FiguraGeometrica> figurasMenores) {
+	public void setFigurasMenores(List<Retangulo> figurasMenores) {
 		this.figurasMenores = figurasMenores;
 	}
 

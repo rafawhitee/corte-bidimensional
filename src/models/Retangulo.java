@@ -1,38 +1,33 @@
+package models;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class FiguraGeometrica {
-
-	public static final Integer MAX_COORDENADAS = 4; // Máximo de 4 coordenadas
-	public static final String UNIDADE_MEDIDA = "cm";
-	public static final String POTENCIA_AREA = "²";
-	public static final String POTENCIA_VOLUME = "³";
-
-	private List<Coordenada> coordenadas;
+public class Retangulo extends Figura {
 
 	private double comprimento;
 	private double largura;
-
-	private double area;
 
 	private Range rangeComprimento;
 	private Range rangeLargura;
 
 	// Construtor da Figura
-	public FiguraGeometrica(Coordenada cod1, Coordenada cod2, Coordenada cod3, Coordenada cod4) {
-		coordenadas = new ArrayList<Coordenada>();
+	public Retangulo(Coordenada cod1, Coordenada cod2, Coordenada cod3, Coordenada cod4, String unidadeMedida) {
+		super(4, unidadeMedida); // Inicia com o maxCoordenadas igual a 4 e a unidadeMedida
+		setCoordenadas(new ArrayList<Coordenada>());
 		popularCoordenadas(cod1, cod2, cod3, cod4);
 		popularComprimentoAndLargura();
-		area = calculaArea();
+		setArea(calcularArea());
 		popularRange();
 	}
 
 	/* Outros métodos */
 
 	// Adiciona uma coordenada na lista de coordenadas
-	// Somente adiciona se o tamanho da lista atual for menor que 4
+	// Somente adiciona se o tamanho da lista atual for menor que a Max Coordenadas
 	private void adicionarCoordenada(Coordenada cod) {
-		if (coordenadas != null && cod != null && coordenadas.size() < MAX_COORDENADAS) {
+		List<Coordenada> coordenadas = getCoordenadas();
+		if (coordenadas != null && cod != null && coordenadas.size() < getMaxCoordenadas()) {
 			coordenadas.add(cod);
 		}
 	}
@@ -63,7 +58,8 @@ public class FiguraGeometrica {
 	}
 
 	// Calcula a Area de acordo com o comprimento e a largura
-	public double calculaArea() {
+	@Override
+	public double calcularArea() {
 		if (comprimento > 0.0 && largura > 0.0) {
 			return comprimento * largura;
 		}
@@ -78,6 +74,7 @@ public class FiguraGeometrica {
 	public String retornaCoordenadas() {
 		String retorno = "";
 		boolean contemCoordenadas = contemCoordenadas();
+		List<Coordenada> coordenadas = getCoordenadas();
 		if (contemCoordenadas) {
 			for (Coordenada cod : coordenadas) {
 
@@ -118,6 +115,7 @@ public class FiguraGeometrica {
 	// Método privado que retorna o maior ou menor número da coordenada do Eixo X
 	private double getMaiorOuMenorDoEixoX(boolean maior) {
 		boolean contemCoordenadas = contemCoordenadas();
+		List<Coordenada> coordenadas = getCoordenadas();
 		if (contemCoordenadas) {
 			double retorno = (maior) ? 0.0 : 9999.99;
 			for (Coordenada cod : coordenadas) {
@@ -135,8 +133,9 @@ public class FiguraGeometrica {
 	// Método privado que retorna o maior ou menor número da coordenada do Eixo Y
 	private double getMaiorOuMenorDoEixoY(boolean maior) {
 		boolean contemCoordenadas = contemCoordenadas();
+		List<Coordenada> coordenadas = getCoordenadas();
 		if (contemCoordenadas) {
-			double retorno = (maior) ? 0.0 : 9999.99;
+			double retorno = (maior) ? 0.0 : 9999.99;			
 			for (Coordenada cod : coordenadas) {
 				if (maior) {
 					retorno = Math.max(retorno, cod.getY());
@@ -167,11 +166,12 @@ public class FiguraGeometrica {
 
 	// Retorna em String a área concatenada com a Unidade Medida da Área
 	public String mostraArea() {
-		return getArea() + UNIDADE_MEDIDA + POTENCIA_AREA;
+		return getArea() + getUnidadeMedida() + POTENCIA_AREA;
 	}
 
 	// Verifica se o tamanho da lista é maior que 0
 	public boolean contemCoordenadas() {
+		List<Coordenada> coordenadas = getCoordenadas();
 		if (coordenadas != null && coordenadas.size() > 0) {
 			return true;
 		}
@@ -212,19 +212,4 @@ public class FiguraGeometrica {
 		this.rangeLargura = rangeLargura;
 	}
 
-	public double getArea() {
-		return area;
-	}
-
-	public void setArea(double area) {
-		this.area = area;
-	}
-
-	public List<Coordenada> getCoordenadas() {
-		return coordenadas;
-	}
-
-	public void setCoordenadas(List<Coordenada> coordenadas) {
-		this.coordenadas = coordenadas;
-	}
 }
